@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">SER423 Lab</string>
+    <string name="app_name">SER423 Lab 1 App</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello World</string>
+    <string name="add_location">Add Location</string>
+    <string name="see_locations">See Locations</string>
 </resources>

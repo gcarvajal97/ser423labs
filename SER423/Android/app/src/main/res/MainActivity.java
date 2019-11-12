@@ -1,48 +1,37 @@
-package com.example.ser423lab;
+package com.example.myapplication;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.Spinner;
-import android.widget.TextView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.RawRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import edu.asu.bsse.gcarvaj3.ser423labapp.PlaceDescription;
+import edu.asu.bsse.gcarvaj3.ser423labapp.PlacesLibrary;
 
 public class MainActivity extends AppCompatActivity {
-    static final String JSONSTR = "{\"address-title\" : \"ASU West Campus\"," +
-                "\"address-street\" : \"13591 N 47th Ave, Phoenix AZ 85051\"," +
-                "\"elevation\" : 1100.0," +
-                "\"latitude\" : 33.608979," +
-                "\"longitude\" : -112.159469," +
-                "\"name\" : \"ASU-West\"," +
-                "\"image\" : \"asuwest\"," +
-                "\"description\" : \"Home of ASU's Applied Computing Program\"," +
-                "\"category\" : \"School\"}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        PlaceDescription place = new PlaceDescription(JSONSTR);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        setSupportActionBar(toolbar);
+
+       FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,28 +39,26 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        // Get the widgets reference from XML layout
-        RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
-
-        // Create a TextView programmatically.
-        TextView tv = new TextView(getApplicationContext());
-
-        // Create a LayoutParams for TextView
-        LayoutParams lp = new RelativeLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT, // Width of TextView
-                LayoutParams.WRAP_CONTENT); // Height of TextView
-
-        // Apply the layout parameters to TextView widget
-        tv.setLayoutParams(lp);
-
-        // Set text to display in TextView
-        tv.setText(place.toString());
-
-        // Set a text color for TextView text
-        tv.setTextColor(Color.parseColor("#ff0000"));
-
-        // Add newly created TextView to parent view group (RelativeLayout)
-        rl.addView(tv);
+        final Spinner spinner = findViewById(R.id.spinner);
+        Button btn = findViewById(R.id.btn);
+        PlacesLibrary library = PlacesLibrary.getInstance(readRawResource(R.raw.places));
+        final ArrayList<String> places = new ArrayList<>();
+        for (int i = 0; i < library.getPlacesLibrary().size(); i++){
+            places.add(library.getPlacesLibrary().get(i).getName());
+        }
+        android.util.Log.e(this.getClass().getSimpleName(), places.toString());
+        final ArrayAdapter<String> spinnerArrayAdapter =
+                new ArrayAdapter<>(this,R.layout.spinner_text, places);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_text);
+        spinner.setAdapter(spinnerArrayAdapter);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                places.add("Apple");
+                spinnerArrayAdapter.notifyDataSetChanged();
+                android.util.Log.e(this.getClass().getSimpleName(), "Button Clicked");
+            }
+        });
     }
 
     @Override

@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // Get the widgets reference from XML layout
-        RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
+        RelativeLayout rl = findViewById(R.id.rl);
 
         // Create a TextView programmatically.
         TextView tv = new TextView(getApplicationContext());
@@ -122,5 +122,51 @@ public class MainActivity extends AppCompatActivity {
     private String readStream(InputStream is) {
         Scanner s = new Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
+    }
+
+    // To get into the onRestart method, navigate away from the activity, and then navigate to
+    // it again. In my testing it was go to Android Home, and then open App again.
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        android.util.Log.d(this.getClass().getSimpleName(), "onRestart Method");
+    }
+
+    // To get into the onStart method, open the application or go through the onRestart
+    // activity flow.
+    @Override
+    protected void onStart() {
+        super.onStart();
+        android.util.Log.d(this.getClass().getSimpleName(), "onStart Method");
+    }
+
+    // To get into the onPause method, navigate away from the activity.
+    @Override
+    protected void onPause() {
+        super.onPause();
+        android.util.Log.d(this.getClass().getSimpleName(), "onPause Method");
+    }
+
+    // To get into the onStart method, close the activity.
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        android.util.Log.d(this.getClass().getSimpleName(), "onDestroy Method");
+    }
+
+
+    // To get into the onResume method, navigate away from the activity, and then navigate to
+    // it again. In my testing it was go to Android Home, and then open App again.
+    @Override
+    protected void onResume() {
+        super.onResume();
+        android.util.Log.d(this.getClass().getSimpleName(), "onResume Method");
+    }
+
+    // To get into the onStop method, navigate away from the activity.
+    @Override
+    protected void onStop() {
+        super.onStop();
+        android.util.Log.d(this.getClass().getSimpleName(), "onStop Method");
     }
 }

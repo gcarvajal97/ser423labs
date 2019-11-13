@@ -4,4 +4,8 @@
     <string name="hello_world">Hello World</string>
     <string name="add_location">Add Location</string>
     <string name="see_locations">See Locations</string>
+    <string name="alert">Alert</string>
+    <string name="dialog_message">Hello Android Developer</string>
+    <string name="dialog_title">Sample Alert Dialog</string>
+    <string name="dialog_close">OK</string>
 </resources>

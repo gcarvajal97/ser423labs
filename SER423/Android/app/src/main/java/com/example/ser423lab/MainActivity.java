@@ -1,5 +1,6 @@
 package com.example.ser423lab;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,8 +12,10 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RawRes;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -54,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
                 "\"image\" : \"asuwest\"," +
                 "\"description\" : \"Home of ASU's Applied Computing Program\"," +
                 "\"category\" : \"School\"}";
+    Button closeButton;
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +96,32 @@ public class MainActivity extends AppCompatActivity {
 
         // Add newly created TextView to parent view group (RelativeLayout)
         rl.addView(tv);
+
+        closeButton = findViewById(R.id.button);
+        builder = new AlertDialog.Builder(this);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Setting message manually and performing action on button click
+                builder.setMessage(R.string.dialog_message)
+                        .setCancelable(false)
+                        .setTitle(R.string.dialog_title)
+                        .setPositiveButton(R.string.dialog_close,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Toast.makeText(getApplicationContext(),
+                                                "you choose OK action for alertbox",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                //Creating dialog box
+                AlertDialog alert = builder.create();
+                //Setting the title manually
+                alert.setTitle("AlertDialogExample");
+                alert.show();
+            }
+        });
     }
 
     @Override

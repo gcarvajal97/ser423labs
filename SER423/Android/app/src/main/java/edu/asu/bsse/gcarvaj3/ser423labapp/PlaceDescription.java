@@ -191,4 +191,17 @@ public class PlaceDescription {
                 + "\nlongitude: " + this.getLongitude()
                 + "\n }";
     }
+
+    @NonNull
+    public String toJSONString() {
+        return "{ \"name\": \"" + this.getName()
+                + "\", \"description\": \"" + this.getDescription()
+                + "\", \"category\": \"" + this.getCategory()
+                + "\", \"addressTitle\": \"" + this.getAddressTitle()
+                + "\", \"addressStreet\": \"" + this.getAddressStreet()
+                + "\", \"elevation\": " + this.getElevation()
+                + ", \"latitude\": " + this.getLatitude()
+                + ", \"longitude\": " + this.getLongitude()
+                + "\n }";
+    }
 }

@@ -8,4 +8,5 @@
     <string name="dialog_message">Hello Android Developer</string>
     <string name="dialog_title">Sample Alert Dialog</string>
     <string name="dialog_close">OK</string>
+    <string name="title_activity_alert">AlertActivity</string>
 </resources>

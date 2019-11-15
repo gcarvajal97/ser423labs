@@ -18,6 +18,11 @@
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.example.ser423lab.AlertActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/title_activity_alert"
+            android:theme="@style/Theme.AppCompat.Dialog" />
         <activity android:name="com.example.ser423lab.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,6 +1,7 @@
 package com.example.ser423lab;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.example.ser423lab.AlertActivity;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     AlertDialog.Builder builder;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -102,24 +104,8 @@ public class MainActivity extends AppCompatActivity {
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //Setting message manually and performing action on button click
-                builder.setMessage(R.string.dialog_message)
-                        .setCancelable(false)
-                        .setTitle(R.string.dialog_title)
-                        .setPositiveButton(R.string.dialog_close,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        Toast.makeText(getApplicationContext(),
-                                                "you choose OK action for alertbox",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                //Creating dialog box
-                AlertDialog alert = builder.create();
-                //Setting the title manually
-                alert.setTitle("AlertDialogExample");
-                alert.show();
+                Intent intent=new Intent(getApplicationContext(), AlertActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ser423lab.test" >
+    package="com.example.myapplication.test" >
 
     <uses-sdk
-        android:minSdkVersion="23"
+        android:minSdkVersion="27"
         android:targetSdkVersion="28" />
 
     <instrumentation
         android:name="androidx.test.runner.AndroidJUnitRunner"
         android:functionalTest="false"
         android:handleProfiling="false"
-        android:label="Tests for com.example.ser423lab"
-        android:targetPackage="com.example.ser423lab" />
+        android:label="Tests for com.example.myapplication"
+        android:targetPackage="com.example.myapplication" />
 
     <uses-permission android:name="android.permission.REORDER_TASKS" />
 

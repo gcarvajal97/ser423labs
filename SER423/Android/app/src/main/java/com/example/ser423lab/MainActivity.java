@@ -4,9 +4,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -19,16 +21,17 @@ import androidx.annotation.RawRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.example.ser423lab.AlertActivity;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import edu.asu.bsse.gcarvaj3.ser423labapp.PlaceDescription;
+import edu.asu.bsse.gcarvaj3.ser423labapp.PlaceLibrary;
 
 /**
  * Copyright 2019 Gianni Carvajal
@@ -50,15 +53,6 @@ import edu.asu.bsse.gcarvaj3.ser423labapp.PlaceDescription;
  */
 
 public class MainActivity extends AppCompatActivity {
-    static final String JSONSTR = "{\"address-title\" : \"ASU West Campus\"," +
-                "\"address-street\" : \"13591 N 47th Ave, Phoenix AZ 85051\"," +
-                "\"elevation\" : 1100.0," +
-                "\"latitude\" : 33.608979," +
-                "\"longitude\" : -112.159469," +
-                "\"name\" : \"ASU-West\"," +
-                "\"image\" : \"asuwest\"," +
-                "\"description\" : \"Home of ASU's Applied Computing Program\"," +
-                "\"category\" : \"School\"}";
     Button closeButton;
     AlertDialog.Builder builder;
 
@@ -67,47 +61,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        PlaceDescription place = new PlaceDescription(JSONSTR);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        PlaceLibrary library = PlaceLibrary.getInstance(readRawResource(R.raw.places));
+
+        // Get Spinner
+        RecyclerView _rlv = findViewById(R.id.recycle_list);
+        _rlv.setLayoutManager(new LinearLayoutManager(this));
+        _rlv.addItemDecoration(
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
         // Get the widgets reference from XML layout
         RelativeLayout rl = findViewById(R.id.rl);
 
-        // Create a TextView programmatically.
-        TextView tv = new TextView(getApplicationContext());
 
-        // Create a LayoutParams for TextView
-        LayoutParams lp = new RelativeLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT, // Width of TextView
-                LayoutParams.WRAP_CONTENT); // Height of TextView
+        ArrayList<String> places = new ArrayList<>();
+        library.getPlaceLibrary().forEach((place) -> places.add(place.getName()));
 
-        // Apply the layout parameters to TextView widget
-        tv.setLayoutParams(lp);
+        // Set places in spinner:
+        RecyclerViewAdapter dataAdapter = new RecyclerViewAdapter(this, places);
 
-        // Set text to display in TextView
-        tv.setText(place.toString());
+        _rlv.setAdapter(dataAdapter);
 
-        // Set a text color for TextView text
-        tv.setTextColor(Color.parseColor("#ff0000"));
 
-        // Add newly created TextView to parent view group (RelativeLayout)
-        rl.addView(tv);
-
-        closeButton = findViewById(R.id.button);
-        builder = new AlertDialog.Builder(this);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(), AlertActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -186,4 +160,5 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         android.util.Log.d(this.getClass().getSimpleName(), "onStop Method");
     }
+
 }

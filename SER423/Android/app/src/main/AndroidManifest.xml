@@ -16,6 +16,11 @@
             android:label="@string/title_activity_alert"
             android:theme="@style/Theme.AppCompat.Dialog"
             android:excludeFromRecents="true" />
+        <activity
+            android:name=".PlacesToastActivity"
+            android:label="@string/title_places_toast_activity"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            android:excludeFromRecents="true" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

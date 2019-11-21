@@ -69,7 +69,7 @@ public class PlaceDescription {
      * Constructor using JSON parsing
      * @param jsonStr String
      */
-    public PlaceDescription(String jsonStr) {
+    PlaceDescription(String jsonStr) {
         try{
             JSONObject jo = new JSONObject(jsonStr);
             this.name = jo.getString("name");
@@ -86,6 +86,10 @@ public class PlaceDescription {
         }
     }
 
+    /**
+     * Default constructor using a JSONObject
+     * @param jo JSONObject
+     */
     public PlaceDescription(JSONObject jo) {
         try{
             this.name = jo.getString("name");

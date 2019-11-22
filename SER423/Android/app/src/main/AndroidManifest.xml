@@ -12,15 +12,14 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".AlertActivity"
-            android:label="@string/title_activity_alert"
-            android:theme="@style/Theme.AppCompat.Dialog"
-            android:excludeFromRecents="true" />
+            android:name=".PlaceViewActivity"
+            android:label="@string/title_activity_place_view"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".PlacesToastActivity"
-            android:label="@string/title_places_toast_activity"
-            android:theme="@style/Theme.AppCompat.Dialog"
-            android:excludeFromRecents="true" />
+            android:name=".AlertActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/title_activity_alert"
+            android:theme="@style/Theme.AppCompat.Dialog" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

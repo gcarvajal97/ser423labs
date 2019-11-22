@@ -3,6 +3,7 @@ package edu.asu.bsse.gcarvaj3.ser423labapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -61,7 +62,7 @@ public class PlaceDescription {
     /**
      * Default Constructor
      */
-    public PlaceDescription(){
+    public PlaceDescription() {
 
     }
 
@@ -69,8 +70,8 @@ public class PlaceDescription {
      * Constructor using JSON parsing
      * @param jsonStr String
      */
-    PlaceDescription(String jsonStr) {
-        try{
+    public PlaceDescription(String jsonStr) {
+        try {
             JSONObject jo = new JSONObject(jsonStr);
             this.name = jo.getString("name");
             this.category = jo.getString("category");
@@ -80,7 +81,7 @@ public class PlaceDescription {
             this.elevation = Double.parseDouble(jo.getString("elevation"));
             this.latitude = Double.parseDouble(jo.getString("latitude"));
             this.longitude = Double.parseDouble(jo.getString("longitude"));
-        }catch (Exception ex){
+        } catch (JSONException e) {
             android.util.Log.w(this.getClass().getSimpleName(),
                     "error converting to/from json");
         }
@@ -100,7 +101,7 @@ public class PlaceDescription {
             this.elevation = Double.parseDouble(jo.getString("elevation"));
             this.latitude = Double.parseDouble(jo.getString("latitude"));
             this.longitude = Double.parseDouble(jo.getString("longitude"));
-        } catch (Exception ex){
+        } catch (JSONException e){
             android.util.Log.w(this.getClass().getSimpleName(),
                     "error converting to/from json");
         }
@@ -185,15 +186,14 @@ public class PlaceDescription {
     @NonNull
     @Override
     public String toString() {
-        return "{ name: " + this.getName()
-                + "\ndescription: " + this.getDescription()
-                + "\ncategory: " + this.getCategory()
-                + "\naddressTitle: " + this.getAddressTitle()
-                + "\n\naddressStreet: " + this.getAddressStreet()
-                + "\n\nelevation: " + this.getElevation()
-                + "\nlatitude: " + this.getLatitude()
-                + "\nlongitude: " + this.getLongitude()
-                + "\n }";
+        return "Name: " + this.getName()
+                + "\nDescription: " + this.getDescription()
+                + "\nCategory: " + this.getCategory()
+                + "\nAddress Title: " + this.getAddressTitle()
+                + "\n\nAddress Street: " + this.getAddressStreet()
+                + "\n\nElevation: " + this.getElevation()
+                + "\nLatitude: " + this.getLatitude()
+                + "\nLongitude: " + this.getLongitude();
     }
 
     @NonNull
@@ -201,11 +201,32 @@ public class PlaceDescription {
         return "{ \"name\": \"" + this.getName()
                 + "\", \"description\": \"" + this.getDescription()
                 + "\", \"category\": \"" + this.getCategory()
-                + "\", \"addressTitle\": \"" + this.getAddressTitle()
-                + "\", \"addressStreet\": \"" + this.getAddressStreet()
+                + "\", \"address-title\": \"" + this.getAddressTitle()
+                + "\", \"address-street\": \"" + this.getAddressStreet()
                 + "\", \"elevation\": " + this.getElevation()
                 + ", \"latitude\": " + this.getLatitude()
                 + ", \"longitude\": " + this.getLongitude()
                 + "\n }";
+    }
+
+    public Boolean compare(PlaceDescription placeOne, PlaceDescription placeTwo, String field) {
+     switch (field) {
+         case "name":
+             return placeOne.getName().equals(placeTwo.getName());
+         case "description":
+             return placeOne.getDescription().equals(placeTwo.getDescription());
+         case "addressTitle":
+             return placeOne.getAddressTitle().equals(placeTwo.getAddressTitle());
+         case "addressStreet":
+             return placeOne.getAddressStreet().equals(placeTwo.getAddressStreet());
+         case "elevation":
+             return placeOne.getElevation().equals(placeTwo.getElevation());
+         case "longitude":
+             return placeOne.getLongitude().equals(placeTwo.getLongitude());
+         case "latitude":
+             return placeOne.getLatitude().equals(placeTwo.getLatitude());
+         default:
+             return false;
+     }
     }
 }

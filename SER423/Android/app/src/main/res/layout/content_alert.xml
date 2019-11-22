@@ -26,6 +26,6 @@
         android:layout_height="59dp"
         android:text="@string/dialog_close"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="134dp"
-        tools:layout_editor_absoluteY="360dp" />
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="364dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

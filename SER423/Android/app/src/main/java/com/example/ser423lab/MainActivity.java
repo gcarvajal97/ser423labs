@@ -53,8 +53,7 @@ import edu.asu.bsse.gcarvaj3.ser423labapp.PlaceLibrary;
  */
 
 public class MainActivity extends AppCompatActivity {
-    Button closeButton;
-    AlertDialog.Builder builder;
+    RecyclerViewAdapter dataAdapter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -72,14 +71,11 @@ public class MainActivity extends AppCompatActivity {
         // Get the widgets reference from XML layout
         RelativeLayout rl = findViewById(R.id.rl);
 
-
-        ArrayList<String> places = new ArrayList<>();
-        library.getPlaceLibrary().forEach((place) -> places.add(place.getName()));
-
         // Set places in spinner:
-        RecyclerViewAdapter dataAdapter = new RecyclerViewAdapter(this, places);
+        this.dataAdapter = new RecyclerViewAdapter(this, library.getPlaceLibrary());
 
-        _rlv.setAdapter(dataAdapter);
+        _rlv.setAdapter(this.dataAdapter);
+
 
 
     }
@@ -159,6 +155,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         android.util.Log.d(this.getClass().getSimpleName(), "onStop Method");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        android.util.Log.i(this.getClass().getSimpleName(), data.getStringExtra("request"));
+        if (data.getStringExtra("request").equals("delete")) requestCode = 1;
+        this.dataAdapter.onActivityResult(requestCode, resultCode, data);
     }
 
 }

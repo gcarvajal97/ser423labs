@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        this.library = PlaceLibrary.getInstance(readRawResource(R.raw.places));
 
         // Get Spinner
         RecyclerView _rlv = findViewById(R.id.recycle_list);
@@ -58,9 +57,8 @@ public class MainActivity extends AppCompatActivity {
         // Get the widgets reference from XML layout
         RelativeLayout rl = findViewById(R.id.rl);
 
-        // Set places in spinner:
-        this.dataAdapter = new RecyclerViewAdapter(this,
-                library.getPlaceLibrary(), library);
+        // Set places in list:
+        this.dataAdapter = new RecyclerViewAdapter(this, this);
 
         _rlv.setAdapter(this.dataAdapter);
     }
@@ -159,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
                 case "add":
                     this.library = PlaceLibrary.getInstance(
                             data.getStringExtra("NEW_LIBRARY_STR"));
-                    this.recreate();
                     break;
                 default:
                     break;

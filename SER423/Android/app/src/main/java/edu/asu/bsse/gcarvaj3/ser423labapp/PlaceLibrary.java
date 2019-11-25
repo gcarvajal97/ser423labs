@@ -31,10 +31,16 @@ public class PlaceLibrary {
     private PlaceLibrary(String fileName) {
         placeLibrary = readFromJson(fileName);
     }
+    private PlaceLibrary() {
+        placeLibrary = new ArrayList<>();
+    }
 
     public static PlaceLibrary getInstance(String fileName) {
         if (library == null) {
-            library = new PlaceLibrary(fileName);
+            if (fileName.contains("{")) library = new PlaceLibrary(fileName);
+            else {
+                library = new PlaceLibrary();
+            }
         }
         return library;
     }

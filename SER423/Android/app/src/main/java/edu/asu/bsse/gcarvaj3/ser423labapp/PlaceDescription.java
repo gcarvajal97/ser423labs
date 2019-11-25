@@ -63,7 +63,14 @@ public class PlaceDescription {
      * Default Constructor
      */
     public PlaceDescription() {
-
+        this.name = "unknown";
+        this.description = "unknown";
+        this.category = "unknown";
+        this.addressStreet = "unknown";
+        this.elevation = 0.0;
+        this.latitude = 0.0;
+        this.longitude = 0.0;
+        this.addressTitle = "unknown";
     }
 
     /**

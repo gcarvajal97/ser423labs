@@ -40,17 +40,21 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    private ArrayList<PlaceDescription> mData;
+    private ArrayList<PlaceDescription> mData = new ArrayList<>();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    private PlaceLibrary library;
+    ArrayList<String> names = new ArrayList<>();
+    MainActivity main;
+    PlaceDescription selected;
+    PlaceLibrary library = PlaceLibrary.getInstance("none");
 
 
     // data is passed into the constructor
-    RecyclerViewAdapter(Context context, ArrayList<PlaceDescription> data, PlaceLibrary library) {
+    RecyclerViewAdapter(Context context, MainActivity main) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = data;
-        this.library = library;
+        this.mData.add(new PlaceDescription());
+        this.names.add("unknown");
+        this.main = main;
     }
 
     // inflates the row layout from xml when needed
@@ -58,20 +62,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.places_list_layout, parent, false);
+        if (this.names.get(0).equals("unknown")) {
+            try {
+                MethodInformation mi = new MethodInformation(this.main,
+                        view.getResources().getString(R.string.defaultUrl), "getNames",
+                        new Object[]{});
+                AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
+            } catch (Exception ex) {
+                android.util.Log.w(this.getClass().getSimpleName(), "Exception creating adapter: " +
+                        ex.getMessage());
+            }
+        }
         return new ViewHolder(view);
     }
 
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String place = mData.get(position).getName();
+        String place = names.get(position);
         holder.textView.setText(place);
     }
 
     // total number of rows
     @Override
     public int getItemCount() {
-        return mData.size();
+        return names.size();
     }
 
 
@@ -173,5 +188,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         } else {
             android.util.Log.w(this.getClass().getSimpleName(), "Request Failed");
         }
+    }
+
+
+    void setNames(ArrayList<String> names) {
+        this.names = names;
+        for (int i = 0; i < names.size(); i ++)
+            try {
+                MethodInformation mi = new MethodInformation(main,
+                        main.getResources().getString(R.string.defaultUrl), "get",
+                        new String[]{names.get(i)});
+                AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
+            } catch (Exception ex) {
+                android.util.Log.w(this.getClass().getSimpleName(), "Exception creating adapter: " +
+                        ex.getMessage());
+            }
+
+    }
+
+    void addData(PlaceDescription placeToAdd) {
+        this.mData.add(placeToAdd);
+        this.library.getPlaceLibrary().add(placeToAdd);
+        this.main.library = this.library;
     }
 }

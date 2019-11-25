@@ -12,8 +12,8 @@
     <string name="title_places_toast_activity">PlaceToastActivity</string>
     <string name="delete_location">Delete Location</string>
     <string name="update_location">Update Location</string>
-    <string name="title_activity_place_view">PlaceViewActivity</string>
-    <string name="title_activity_add_location">AddLocationActivity</string>
+    <string name="title_activity_place_view">Place Details</string>
+    <string name="title_activity_add_location">Add Location</string>
     <string name="location_name">Location Name</string>
     <string name="location_address_title">Location Address Title</string>
     <string name="location_address_street">Location Address Street</string>
@@ -24,7 +24,8 @@
     <string name="location_category">Location Category</string>
     <string name="location_image">Location Image</string>
     <string name="calculate_distance">Calculate Distance</string>
-    <string name="title_activity_distance_calculation">DistanceCalculationActivity</string>
+    <string name="title_activity_distance_calculation">Distance and Bearing Calculation</string>
     <string name="compare">Compare</string>
     <string name="done">Done</string>
+    <string name="defaultUrl">http://10.0.2.2:8080</string>
 </resources>

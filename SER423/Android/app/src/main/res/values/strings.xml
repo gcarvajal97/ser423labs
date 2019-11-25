@@ -13,4 +13,18 @@
     <string name="delete_location">Delete Location</string>
     <string name="update_location">Update Location</string>
     <string name="title_activity_place_view">PlaceViewActivity</string>
+    <string name="title_activity_add_location">AddLocationActivity</string>
+    <string name="location_name">Location Name</string>
+    <string name="location_address_title">Location Address Title</string>
+    <string name="location_address_street">Location Address Street</string>
+    <string name="location_longitude">Location Longitude</string>
+    <string name="location_elevation">Location Elevation</string>
+    <string name="location_latitude">Location Latitude</string>
+    <string name="location_description">Location Description</string>
+    <string name="location_category">Location Category</string>
+    <string name="location_image">Location Image</string>
+    <string name="calculate_distance">Calculate Distance</string>
+    <string name="title_activity_distance_calculation">DistanceCalculationActivity</string>
+    <string name="compare">Compare</string>
+    <string name="done">Done</string>
 </resources>

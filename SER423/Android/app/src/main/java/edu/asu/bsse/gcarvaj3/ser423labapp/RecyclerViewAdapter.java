@@ -1,4 +1,4 @@
-package com.example.ser423lab;
+package edu.asu.bsse.gcarvaj3.ser423labapp;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,25 +12,45 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ser423Lab.R;
+
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
-import edu.asu.bsse.gcarvaj3.ser423labapp.PlaceDescription;
-
 import static android.app.Activity.RESULT_OK;
 
+
+/**
+ * Copyright 2019 Gianni Carvajal
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @author Gianni Carvajal mailto:gcarvaj3@asu.edu
+ * @version November 1, 2019
+ */
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private ArrayList<PlaceDescription> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    private static final int REQUEST_FOR_UPDATE = 0;
-    private static final int REQUEST_FOR_DELETE = 1;
+    private PlaceLibrary library;
+
 
     // data is passed into the constructor
-    RecyclerViewAdapter(Context context, ArrayList<PlaceDescription> data) {
+    RecyclerViewAdapter(Context context, ArrayList<PlaceDescription> data, PlaceLibrary library) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+        this.library = library;
     }
 
     // inflates the row layout from xml when needed
@@ -77,7 +97,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             if (view.getId() == -1) {
                 Intent intent = new Intent(view.getContext(), PlaceViewActivity.class);
                 intent.putExtras(selectedLocationBundle);
-                ((Activity) view.getContext()).startActivityForResult(intent, REQUEST_FOR_UPDATE);
+                ((Activity) view.getContext()).startActivityForResult(intent,
+                        Constants.REQUEST_FOR_UPDATE);
             }
         }
     }
@@ -108,13 +129,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         extras.putDouble("LATITUDE", locationToDisplay.getLatitude());
         extras.putString("STR_REPR", locationToDisplay.toString());
         extras.putString("JSON_STR", locationToDisplay.toJSONString());
+        extras.putString("LIBRARY_STR", this.library.toJSONString());
         return extras;
     }
 
     void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_FOR_UPDATE:
+                case Constants.REQUEST_FOR_UPDATE:
                     int foundIndex = 0;
                     PlaceDescription updatedLocation =
                             new PlaceDescription(data.getStringExtra("JSON_STR"));
@@ -129,7 +151,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     this.notifyDataSetChanged();
                     android.util.Log.i(this.getClass().getSimpleName(), "Location updated");
                     break;
-                case REQUEST_FOR_DELETE:
+                case Constants.REQUEST_FOR_DELETE:
                     android.util.Log.i(this.getClass().getSimpleName(), "Location deleted");
                     foundIndex = 0;
                     PlaceDescription deletedLocation =

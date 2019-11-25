@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ser423lab.AlertActivity">
+    tools:context="com.example.ser423Lab.edu.asu.bsse.gcarvaj3.ser423labapp.AlertActivity">
 
     <include layout="@layout/content_alert" />
 

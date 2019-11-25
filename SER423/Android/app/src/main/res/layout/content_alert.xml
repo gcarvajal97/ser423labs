@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.ser423lab.AlertActivity"
+    tools:context="com.example.ser423Lab.edu.asu.bsse.gcarvaj3.ser423labapp.AlertActivity"
     tools:showIn="@layout/activity_alert">
 
     <TextView

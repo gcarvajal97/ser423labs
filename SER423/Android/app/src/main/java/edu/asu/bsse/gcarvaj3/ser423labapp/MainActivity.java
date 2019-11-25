@@ -1,24 +1,12 @@
-package com.example.ser423lab;
+package edu.asu.bsse.gcarvaj3.ser423labapp;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RawRes;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -26,12 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Scanner;
+import com.example.ser423Lab.R;
 
-import edu.asu.bsse.gcarvaj3.ser423labapp.PlaceDescription;
-import edu.asu.bsse.gcarvaj3.ser423labapp.PlaceLibrary;
+import java.io.InputStream;
+import java.util.Scanner;
 
 /**
  * Copyright 2019 Gianni Carvajal
@@ -54,13 +40,14 @@ import edu.asu.bsse.gcarvaj3.ser423labapp.PlaceLibrary;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerViewAdapter dataAdapter;
+    PlaceLibrary library;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        PlaceLibrary library = PlaceLibrary.getInstance(readRawResource(R.raw.places));
+        this.library = PlaceLibrary.getInstance(readRawResource(R.raw.places));
 
         // Get Spinner
         RecyclerView _rlv = findViewById(R.id.recycle_list);
@@ -72,12 +59,10 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout rl = findViewById(R.id.rl);
 
         // Set places in spinner:
-        this.dataAdapter = new RecyclerViewAdapter(this, library.getPlaceLibrary());
+        this.dataAdapter = new RecyclerViewAdapter(this,
+                library.getPlaceLibrary(), library);
 
         _rlv.setAdapter(this.dataAdapter);
-
-
-
     }
 
     @Override
@@ -94,9 +79,11 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.add_location) {
+            Intent addLocationIntent = new Intent(this.getBaseContext(), AddLocationActivity.class);
+            addLocationIntent.putExtra("LIBRARY_STR", this.library.toJSONString());
+            addLocationIntent.putExtra("request", "add");
+            startActivityForResult(addLocationIntent, Constants.REQUEST_FOR_ADDITION);
         }
 
         return super.onOptionsItemSelected(item);
@@ -159,9 +146,25 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        android.util.Log.i(this.getClass().getSimpleName(), data.getStringExtra("request"));
-        if (data.getStringExtra("request").equals("delete")) requestCode = 1;
-        this.dataAdapter.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            switch (data.getStringExtra("request")) {
+                case "update":
+                    requestCode = Constants.REQUEST_FOR_UPDATE;
+                    this.dataAdapter.onActivityResult(requestCode, resultCode, data);
+                    break;
+                case "delete":
+                    requestCode = Constants.REQUEST_FOR_DELETE;
+                    this.dataAdapter.onActivityResult(requestCode, resultCode, data);
+                    break;
+                case "add":
+                    this.library = PlaceLibrary.getInstance(
+                            data.getStringExtra("NEW_LIBRARY_STR"));
+                    this.recreate();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
 }

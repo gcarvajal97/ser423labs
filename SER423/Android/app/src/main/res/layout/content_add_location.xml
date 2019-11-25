@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="edu.asu.bsse.gcarvaj3.ser423labapp.AddLocationActivity"
+    tools:showIn="@layout/activity_add_location">
+
+    <EditText
+        android:id="@+id/add_location_category"
+        android:layout_width="208dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="100dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/location_category"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_location_description" />
+
+    <EditText
+        android:id="@+id/add_location_description"
+        android:layout_width="208dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="100dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/location_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_location_latitude" />
+
+    <EditText
+        android:id="@+id/add_location_latitude"
+        android:layout_width="208dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="100dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/location_latitude"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_location_longitude" />
+
+    <EditText
+        android:id="@+id/add_location_longitude"
+        android:layout_width="208dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="100dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/location_longitude"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_location_elevation" />
+
+    <EditText
+        android:id="@+id/add_location_elevation"
+        android:layout_width="208dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="100dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/location_elevation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_location_address_title" />
+
+    <EditText
+        android:id="@+id/add_location_address_street"
+        android:layout_width="208dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="100dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/location_address_street"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_location_name" />
+
+    <EditText
+        android:id="@+id/add_location_name"
+        android:layout_width="205dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/location_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/add_location_address_title"
+        android:layout_width="198dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="100dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/location_address_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_location_address_street" />
+
+    <Button
+        android:id="@+id/add_location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/add_location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_location_category" />
+</androidx.constraintlayout.widget.ConstraintLayout>

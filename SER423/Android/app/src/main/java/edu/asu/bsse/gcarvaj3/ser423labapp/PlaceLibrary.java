@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Copyright 2019 Gianni Carvajal
@@ -82,5 +83,16 @@ public class PlaceLibrary {
 
     public ArrayList<PlaceDescription> getPlaceLibrary() {
         return placeLibrary;
+    }
+
+    public boolean findName(PlaceLibrary library, String name) {
+        AtomicReference<Boolean> found = new AtomicReference<>(false);
+        if (library.getPlaceLibrary().isEmpty()) return false;
+        library.getPlaceLibrary().forEach(location -> {
+            if (location.getName().equals(name)) {
+                found.set(true);
+            }
+        });
+        return found.get();
     }
 }

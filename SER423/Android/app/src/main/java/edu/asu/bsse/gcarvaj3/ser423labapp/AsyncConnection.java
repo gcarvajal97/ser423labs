@@ -100,6 +100,7 @@ public class AsyncConnection extends AsyncTask<MethodInformation, Integer, Metho
                         al.add(ja.getString(i));
                     }
                     String[] names = al.toArray(new String[0]);
+                    res.parent.dataAdapter.clearData();
                     res.parent.dataAdapter.setNames(al);
                     res.parent.dataAdapter.notifyDataSetChanged();
                     break;
@@ -115,6 +116,8 @@ public class AsyncConnection extends AsyncTask<MethodInformation, Integer, Metho
                 }
                 case "add":
                     try {
+                        android.util.Log.d(this.getClass().getSimpleName(),
+                                "Adding location");
                         // finished adding a student.
                         // refresh the list of students by going back to the server for names
                         MethodInformation mi = new MethodInformation(res.parent,
@@ -124,6 +127,21 @@ public class AsyncConnection extends AsyncTask<MethodInformation, Integer, Metho
                         android.util.Log.w(this.getClass().getSimpleName(),
                                 "Exception processing getNames: " +
                                 ex.getMessage());
+                    }
+                    break;
+                case "remove":
+                    try {
+                        android.util.Log.d(this.getClass().getSimpleName(),
+                                "Removing location");
+                        // finished removing a student.
+                        // refresh the list of students by going back to the server for names
+                        MethodInformation mi = new MethodInformation(res.parent,
+                                res.urlString, "getNames", new Object[]{});
+                        AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
+                    } catch (Exception ex) {
+                        android.util.Log.w(this.getClass().getSimpleName(),
+                                "Exception processing getNames: " +
+                                        ex.getMessage());
                     }
                     break;
             }

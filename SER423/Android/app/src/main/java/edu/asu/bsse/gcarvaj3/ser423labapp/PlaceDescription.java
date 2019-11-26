@@ -213,7 +213,26 @@ public class PlaceDescription {
                 + "\", \"elevation\": " + this.getElevation()
                 + ", \"latitude\": " + this.getLatitude()
                 + ", \"longitude\": " + this.getLongitude()
-                + "\n }";
+                + "}";
+    }
+
+    public JSONObject toJson() {
+        JSONObject jo = new JSONObject();
+        try {
+            jo.put("name", this.getName());
+            jo.put("description", this.getDescription());
+            jo.put("category", this.getCategory());
+            jo.put("address-title", this.getAddressTitle());
+            jo.put("address-street", this.getAddressStreet());
+            jo.put("elevation", this.getElevation());
+            jo.put("longitude", this.getLongitude());
+            jo.put("latitude", this.getLatitude());
+
+        } catch (JSONException e) {
+            System.out.println(this.getClass().getSimpleName()+
+                    ": error converting to json");
+        }
+        return jo;
     }
 
     public Boolean compare(PlaceDescription placeOne, PlaceDescription placeTwo, String field) {

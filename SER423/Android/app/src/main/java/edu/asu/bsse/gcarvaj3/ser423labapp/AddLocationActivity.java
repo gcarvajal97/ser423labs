@@ -84,8 +84,8 @@ public class AddLocationActivity extends AppCompatActivity {
                             Double.parseDouble(newLocationLongitude));
                     currentLibrary.getPlaceLibrary().add(newLocation);
                     setResult(RESULT_OK,
-                            new Intent().putExtra("NEW_LIBRARY_STR",
-                                    currentLibrary.toJSONString()
+                            new Intent().putExtra("NEW_LOCATION",
+                                    newLocation.toJSONString()
                             ).putExtra("request", "add"));
                     finish();
                 } catch (NumberFormatException e) {

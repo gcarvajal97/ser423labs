@@ -155,8 +155,19 @@ public class MainActivity extends AppCompatActivity {
                     this.dataAdapter.onActivityResult(requestCode, resultCode, data);
                     break;
                 case "add":
-                    this.library = PlaceLibrary.getInstance(
-                            data.getStringExtra("NEW_LIBRARY_STR"));
+                    try {
+                        MethodInformation mi = new MethodInformation(this,
+                                this.getResources().getString(R.string.defaultUrl), "add",
+                                new Object[]{
+                                        new PlaceDescription(
+                                                data.getStringExtra(
+                                                        "NEW_LOCATION")
+                                        ).toJson()});
+                        AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
+                    } catch (Exception ex) {
+                        android.util.Log.w(this.getClass().getSimpleName(),
+                                "Exception creating adapter: " + ex.getMessage());
+                    }
                     break;
                 default:
                     break;

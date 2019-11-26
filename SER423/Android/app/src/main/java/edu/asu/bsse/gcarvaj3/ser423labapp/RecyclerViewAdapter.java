@@ -162,6 +162,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         }
 
                     }
+                    try {
+                        MethodInformation mi = new MethodInformation(this.main,
+                                this.main.getResources().getString(R.string.defaultUrl), "remove",
+                                new String[]{this.mData.get(foundIndex).getName()});
+                        AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
+                    } catch (Exception ex) {
+                        android.util.Log.w(this.getClass().getSimpleName(), "Exception creating adapter: " +
+                                ex.getMessage());
+                    }
+                    try {
+                        MethodInformation mi = new MethodInformation(this.main,
+                                this.main.getResources().getString(R.string.defaultUrl),
+                                "add",
+                                new Object[]{updatedLocation.toJson()});
+                        AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
+                    } catch (Exception ex) {
+                        android.util.Log.w(this.getClass().getSimpleName(),
+                                "Exception creating adapter: " + ex.getMessage());
+                    }
                     this.mData.set(foundIndex, updatedLocation);
                     this.notifyDataSetChanged();
                     android.util.Log.i(this.getClass().getSimpleName(), "Location updated");
@@ -178,7 +197,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         }
 
                     }
-                    this.mData.remove(foundIndex);
+                    try {
+                        MethodInformation mi = new MethodInformation(this.main,
+                                this.main.getResources().getString(R.string.defaultUrl), "remove",
+                                new String[]{this.mData.get(foundIndex).getName()});
+                        AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
+                    } catch (Exception ex) {
+                        android.util.Log.w(this.getClass().getSimpleName(), "Exception creating adapter: " +
+                                ex.getMessage());
+                    }
                     this.notifyDataSetChanged();
                     break;
                 default:
@@ -210,5 +237,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mData.add(placeToAdd);
         this.library.getPlaceLibrary().add(placeToAdd);
         this.main.library = this.library;
+    }
+
+    void clearData(){
+        this.mData.clear();
+        this.library.getPlaceLibrary().clear();
     }
 }

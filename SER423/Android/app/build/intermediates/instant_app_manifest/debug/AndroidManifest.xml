@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.myapplication"
+    package="com.example.ser423lab"
     android:targetSandboxVersion="2"
     android:versionCode="1"
     android:versionName="1.0" >
@@ -8,6 +8,8 @@
     <uses-sdk
         android:minSdkVersion="27"
         android:targetSdkVersion="28" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -18,13 +20,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:testOnly="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true" >
         <activity
-            android:name="com.example.ser423lab.AlertActivity"
+            android:name="edu.asu.bsse.gcarvaj3.ser423labapp.DistanceCalculationActivity"
+            android:label="@string/title_activity_distance_calculation"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="edu.asu.bsse.gcarvaj3.ser423labapp.AddLocationActivity"
+            android:label="@string/title_activity_add_location"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="edu.asu.bsse.gcarvaj3.ser423labapp.PlaceViewActivity"
+            android:label="@string/title_activity_place_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="edu.asu.bsse.gcarvaj3.ser423labapp.AlertActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_alert"
             android:theme="@style/Theme.AppCompat.Dialog" />
-        <activity android:name="com.example.ser423lab.MainActivity" >
+        <activity android:name="edu.asu.bsse.gcarvaj3.ser423labapp.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,6 +1,6 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-3    package="com.example.myapplication"
+3    package="com.example.ser423lab"
 4    android:versionCode="1"
 5    android:versionName="1.0" >
 6
@@ -10,48 +10,78 @@
 9        android:targetSdkVersion="28" />
 9-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml
 10
-11    <application
-11-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:6:5-26:19
-12        android:allowBackup="true"
-12-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:7:9-35
-13        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-13-->[androidx.core:core:1.0.1] /Users/gcarvaja/.gradle/caches/transforms-2/files-2.1/46da25c3e2ae6308b2227b660caa604d/core-1.0.1/AndroidManifest.xml:22:18-86
-14        android:debuggable="true"
-15        android:icon="@mipmap/ic_launcher"
-15-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:8:9-43
-16        android:label="@string/app_name"
-16-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:9:9-41
-17        android:roundIcon="@mipmap/ic_launcher_round"
-17-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:10:9-54
-18        android:supportsRtl="true"
-18-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:11:9-35
-19        android:testOnly="true"
-20        android:theme="@style/AppTheme" >
-20-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:12:9-40
-21        <activity
-21-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:14:9-18:49
-22            android:name="com.example.ser423lab.AlertActivity"
-22-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:15:13-42
-23            android:excludeFromRecents="true"
-23-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:18:13-46
-24            android:label="@string/title_activity_alert"
-24-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:16:13-57
-25            android:theme="@style/Theme.AppCompat.Dialog" />
-25-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:17:13-58
-26        <activity android:name="com.example.ser423lab.MainActivity" >
-26-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:19:9-25:20
-26-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:19:19-47
-27            <intent-filter>
-27-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:20:13-24:29
-28                <action android:name="android.intent.action.MAIN" />
-28-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:21:17-69
-28-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:21:25-66
-29
-30                <category android:name="android.intent.category.LAUNCHER" />
-30-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:23:17-77
-30-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:23:27-74
-31            </intent-filter>
-32        </activity>
-33    </application>
-34
-35</manifest>
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:6:5-67
+11-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:6:22-64
+12
+13    <application
+13-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:8:5-41:19
+14        android:allowBackup="true"
+14-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:9:9-35
+15        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+15-->[androidx.core:core:1.0.1] /Users/gcarvaja/.gradle/caches/transforms-2/files-2.1/3287bb4ca3a3559f2317d061861bbc25/core-1.0.1/AndroidManifest.xml:22:18-86
+16        android:debuggable="true"
+17        android:icon="@mipmap/ic_launcher"
+17-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:10:9-43
+18        android:label="@string/app_name"
+18-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:11:9-41
+19        android:roundIcon="@mipmap/ic_launcher_round"
+19-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:12:9-54
+20        android:supportsRtl="true"
+20-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:13:9-35
+21        android:testOnly="true"
+22        android:theme="@style/AppTheme"
+22-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:15:9-40
+23        android:usesCleartextTraffic="true" >
+23-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:14:9-44
+24        <activity
+24-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:17:9-20:59
+25            android:name="edu.asu.bsse.gcarvaj3.ser423labapp.DistanceCalculationActivity"
+25-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:18:13-90
+26            android:label="@string/title_activity_distance_calculation"
+26-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:19:13-72
+27            android:theme="@style/AppTheme.NoActionBar" />
+27-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:20:13-56
+28        <activity
+28-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:21:9-24:59
+29            android:name="edu.asu.bsse.gcarvaj3.ser423labapp.AddLocationActivity"
+29-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:22:13-82
+30            android:label="@string/title_activity_add_location"
+30-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:23:13-64
+31            android:theme="@style/AppTheme.NoActionBar" />
+31-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:24:13-56
+32        <activity
+32-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:25:9-28:59
+33            android:name="edu.asu.bsse.gcarvaj3.ser423labapp.PlaceViewActivity"
+33-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:26:13-80
+34            android:label="@string/title_activity_place_view"
+34-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:27:13-62
+35            android:theme="@style/AppTheme.NoActionBar" />
+35-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:28:13-56
+36        <activity
+36-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:29:9-33:61
+37            android:name="edu.asu.bsse.gcarvaj3.ser423labapp.AlertActivity"
+37-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:30:13-76
+38            android:excludeFromRecents="true"
+38-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:31:13-46
+39            android:label="@string/title_activity_alert"
+39-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:32:13-57
+40            android:theme="@style/Theme.AppCompat.Dialog" />
+40-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:33:13-58
+41        <activity android:name="edu.asu.bsse.gcarvaj3.ser423labapp.MainActivity" >
+41-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:34:9-40:20
+41-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:34:19-81
+42            <intent-filter>
+42-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:35:13-39:29
+43                <action android:name="android.intent.action.MAIN" />
+43-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:36:17-69
+43-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:36:25-66
+44
+45                <category android:name="android.intent.category.LAUNCHER" />
+45-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:38:17-77
+45-->/Users/gcarvaja/Desktop/SER423/ser423labs/SER423/Android/app/src/main/AndroidManifest.xml:38:27-74
+46            </intent-filter>
+47        </activity>
+48    </application>
+49
+50</manifest>

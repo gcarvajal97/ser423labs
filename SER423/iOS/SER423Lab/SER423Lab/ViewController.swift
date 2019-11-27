@@ -40,7 +40,6 @@ class ViewController: UIViewController {
         textLabelToDisplay.text = newLocation.toString()
         textLabelToDisplay.lineBreakMode = .byWordWrapping
         textLabelToDisplay.numberOfLines = 0
-        print(textLabelToDisplay.text!)
     }
     
     func convertToDictionary(text: String) -> [String: Any]? {
@@ -64,5 +63,21 @@ class ViewController: UIViewController {
             }
         }
         return results
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        NSLog("In viewDidAppear method of first view")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        NSLog("In viewWillAppear method of first view")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        NSLog("In viewDidDisappear method of first view")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NSLog("In viewWillDisappear method of first view")
     }
 }

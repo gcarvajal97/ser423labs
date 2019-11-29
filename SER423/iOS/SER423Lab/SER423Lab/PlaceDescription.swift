@@ -41,6 +41,17 @@ class PlaceDescription {
         self.latitude = latitude
     }
     
+    init() {
+        self.name = "unknown"
+        self.addressTitle = "unknown"
+        self.addressStreet = "unknown"
+        self.category = "unknown"
+        self.description = "unknown"
+        self.elevation = 0.0
+        self.longitude = 0.0
+        self.latitude = 0.0
+    }
+    
     func toString() -> String{
         return ("""
         Name: \(self.name)

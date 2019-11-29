@@ -41,6 +41,17 @@ class PlaceDescription {
         self.latitude = latitude
     }
     
+    init(dict: [String:Any]) {
+        self.name = dict["name"] as? String ?? ""
+        self.addressTitle = dict["address-title"] as? String ?? ""
+        self.addressStreet = dict["address-street"] as? String ?? ""
+        self.category = dict["category"] as? String ?? ""
+        self.description = dict["description"] as? String ?? ""
+        self.elevation = dict["elevation"] as? Double ?? 0.00
+        self.longitude = dict["longitude"] as? Double ?? 0.00
+        self.latitude = dict["latitude"] as? Double ?? 0.00
+    }
+    
     init() {
         self.name = "unknown"
         self.addressTitle = "unknown"
@@ -63,6 +74,33 @@ class PlaceDescription {
         Longitude: \(self.longitude)
         Latitude: \(self.longitude)
         """)
+    }
+
+    func toJsonString() -> String {
+        var jsonStr = "";
+        let dict = toDict()
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
+        // here "jsonData" is the dictionary encoded in JSON data
+            jsonStr = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
+        } catch let error as NSError {
+            print(error)
+        }
+        return jsonStr
+    }
+    
+    func toDict() -> [String:Any] {
+        let dict:[String:Any] = [
+            "name": name,
+            "address-title": addressTitle,
+            "address-street": addressStreet,
+            "category": category,
+            "description": description,
+            "elevation": elevation,
+            "longitude": longitude,
+            "latitude": latitude
+            ] as [String : Any]
+        return dict
     }
     
 }

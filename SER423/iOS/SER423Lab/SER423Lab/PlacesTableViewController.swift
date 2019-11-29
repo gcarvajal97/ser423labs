@@ -22,49 +22,63 @@ import os.log
 
 class PlacesTableViewController: UITableViewController {
     //MARK: Properties
-    let jsonStr = """
-    {"name" : "ASU-Poly","description" : "Home of ASU's Software Engineering Programs", "category" : "School", "address-title" : "ASU Software Engineering", "address-street" : "7171 E Sonoran Arroyo Mall\\nPeralta Hall 230\\nMesa AZ 85212","elevation" : 1384.0,"latitude" : 33.306388,"longitude" : -111.679121}
-    """
+    var urlString: String?
+    var placeNames: [String]?
     
     var newLocation: PlaceDescription?
     var updateLocation: PlaceDescription?
 
+    var indicator: UIActivityIndicatorView!
+    
+    let dispatchQueue = DispatchQueue(label: "Data Queue")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         NSLog("Initial Loading")
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-        if let path = Bundle.main.path(forResource: "places", ofType: "json") {
-            do {
-                  let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-                  let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                  if let jsonResult = jsonResult as? Dictionary<String, AnyObject> {
-                    for key in jsonResult.keys {
-                        let location = jsonResult[key]
-                        let newPlace = PlaceDescription(name: location?["name"] as! String,
-                                                        description: location?["description"] as! String,
-                                                           category: location?["category"] as! String,
-                                                           title: location?["address-title"] as! String,
-                                                           street: location?["address-street"] as! String,
-                                                           elevation: location?["elevation"] as! Double,
-                                                           latitude: location?["latitude"] as! Double,
-                                                           longitude: location?["longitude"] as! Double)
-                        PlaceLibrary.sharedLibrary.addPlaceToLibrary(placeToAdd: newPlace)
-                  }
-                }
-              } catch {
-                   // handle error
-              }
-        }
         navigationItem.leftBarButtonItem = editButtonItem
+        urlString = setURL()
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .medium)
+        self.indicator = indicator
     }
     
+    // Initial loading
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadingActivity()
+    }
+    
+    // Update table with each action (add, remove, update)
+    func loadingActivity() {
+        if placeNames == nil {
+            self.tableView.reloadData()
+            tableView.backgroundView = indicator
+            tableView.separatorStyle = .none
+            NSLog("In loading activity")
+            self.indicator.startAnimating()
+            dispatchQueue.async {
+                self.callGetNamesNUpdatePlaces()
+                Thread.sleep(forTimeInterval: 2)
+                OperationQueue.main.addOperation() {
+                    self.indicator.stopAnimating()
+                    self.tableView.separatorStyle = .singleLine
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
+    // Handle deleting locations from the list
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            PlaceLibrary.sharedLibrary.removePlace(placeToRemove: PlaceLibrary.sharedLibrary.getLibrary()[indexPath.row])
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            let aConnect:PlaceCollectionStub = PlaceCollectionStub(urlString: urlString!)
+            let _:Bool = aConnect.remove(placeName: (self.placeNames?[indexPath.row])!,callback: { _,_  in
+                })
+            self.placeNames = nil
+            self.loadingActivity()
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
@@ -72,24 +86,24 @@ class PlacesTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
+    // Load the first section
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return (placeNames == nil) ? 0 : 1
     }
 
+    // Load the number of rows
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return PlaceLibrary.sharedLibrary.getLibrary().count
+        return placeNames?.count ?? 0
     }
 
+    // Load each cell of the table view
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIdentifier = "PlaceTableViewCell"
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? PlaceTableViewCell  else {
             fatalError("The dequeued cell is not an instance of PlaceTableViewCell.")
         }
-        
-        let place = PlaceLibrary.sharedLibrary.getLibrary()[indexPath.row]
-        
-        cell.nameLabel.text = place.name
+        cell.nameLabel?.text = placeNames?[indexPath.row]
         
         return cell
     }
@@ -134,23 +148,36 @@ class PlacesTableViewController: UITableViewController {
         }
     }
     
-    
     //MARK: Actions
     @IBAction func unwindToPlaceList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? PlacesAddViewController, let place = sourceViewController.place {
             
-            if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                // Update an existing meal.
+            if tableView.indexPathForSelectedRow != nil {
+                // Update an existing location.
                 PlaceLibrary.sharedLibrary.updateLocation(placeToUpdate: updateLocation ?? place)
-                tableView.reloadRows(at: [selectedIndexPath], with: .none)
-            }
-            else {
-                // Add a new meal.
-                NSLog("Adding Location...")
-                let newIndexPath = IndexPath(row: PlaceLibrary.sharedLibrary.getLibrary().count, section: 0)
+                let aConnect:PlaceCollectionStub = PlaceCollectionStub(urlString: urlString!)
+                let _:Bool = aConnect.remove(placeName: (updateLocation?.name)!,callback: { _,_  in
+                    })
+                // Sleep to allow the request to go through before adding the location back
+                Thread.sleep(forTimeInterval: 1)
+                let _:Bool = aConnect.add(place: updateLocation ?? place,callback: { _,_  in
+                    print("\(self.updateLocation?.name ?? place.name) updated as: \(self.updateLocation?.toJsonString() ?? place.toJsonString())")
+                self.placeNames = nil
+                self.loadingActivity()
+                })
                 
-                PlaceLibrary.sharedLibrary.addPlaceToLibrary(placeToAdd: newLocation ?? place)
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
+            } else {
+                // Add a new location.
+                NSLog("Adding Location...")
+                if !(self.placeNames?.contains(newLocation?.name ?? "") ?? true) {
+                    let aConnect:PlaceCollectionStub = PlaceCollectionStub(urlString: urlString!)
+                    let newPlace:PlaceDescription = PlaceDescription(dict: (newLocation?.toDict())!)
+                    let _:Bool = aConnect.add(place: newPlace,callback: { _,_  in
+                    print("\(newPlace.name) added as: \(newPlace.toJsonString())")
+                    self.placeNames = nil
+                    self.loadingActivity()
+                    })
+                }
             }
         }
        
@@ -166,5 +193,72 @@ class PlacesTableViewController: UITableViewController {
             }
         }
         return nil
+    }
+    
+    func setURL () -> String {
+        var serverhost:String = "localhost"
+        var jsonrpcport:String = "8080"
+        var serverprotocol:String = "http"
+        // access and log all of the app settings from the settings bundle resource
+        if let path = Bundle.main.path(forResource: "ServerInfo", ofType: "plist"){
+            // defaults
+            if let dict = NSDictionary(contentsOfFile: path) as? [String:AnyObject] {
+                serverhost = (dict["server_host"] as? String)!
+                jsonrpcport = (dict["server_port"] as? String)!
+                serverprotocol = (dict["server_protocol"] as? String)!
+            }
+        }
+        NSLog("setURL returning: \(serverprotocol)://\(serverhost):\(jsonrpcport)")
+        return "\(serverprotocol)://\(serverhost):\(jsonrpcport)"
+    }
+    
+    func callGetNamesNUpdatePlaces() {
+        PlaceLibrary.sharedLibrary.clearLibrary()
+        self.placeNames?.removeAll()
+        let aConnect:PlaceCollectionStub = PlaceCollectionStub(urlString: urlString!)
+        let _:Bool = aConnect.getNames(callback: { (res: String, err: String?) -> Void in
+            if err != nil {
+                NSLog(err!)
+            } else{
+                NSLog(res)
+                if let data: Data = res.data(using: String.Encoding.utf8){
+                    do{
+                        let dict = try JSONSerialization.jsonObject(with: data,options:.mutableContainers) as?[String:AnyObject]
+                        self.placeNames = dict?["result"] as! [String?] as? [String]
+                        if (self.placeNames != nil) {
+                            for name in self.placeNames! {
+                                self.callGetNPopulateUIFields(name)
+                            }
+                        }
+                        
+                    } catch {
+                        print("unable to convert to dictionary")
+                    }
+                }
+                
+            }
+        })
+        // end of method call to getNames
+    }
+    
+    func callGetNPopulateUIFields(_ name: String){
+        let aConnect:PlaceCollectionStub = PlaceCollectionStub(urlString: urlString!)
+        let _:Bool = aConnect.get(name: name, callback: { (res: String, err: String?) -> Void in
+            if err != nil {
+                NSLog(err!)
+            }else{
+                NSLog(res)
+                if let data: Data = res.data(using: String.Encoding.utf8){
+                    do{
+                        let dict = try JSONSerialization.jsonObject(with: data,options:.mutableContainers) as?[String:AnyObject]
+                        let aDict:[String:AnyObject] = (dict!["result"] as? [String:AnyObject])!
+                        let loadedData = PlaceDescription(dict: aDict)
+                        PlaceLibrary.sharedLibrary.addPlaceToLibrary(placeToAdd: loadedData)
+                    } catch {
+                        NSLog("unable to convert to dictionary")
+                    }
+                }
+            }
+        })
     }
 }

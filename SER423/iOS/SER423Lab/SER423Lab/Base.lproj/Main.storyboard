@@ -75,9 +75,10 @@
                         <viewLayoutGuide key="safeArea" id="emg-fB-oPq"/>
                     </view>
                     <navigationItem key="navigationItem" id="hDQ-Ys-5dK">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="duC-bU-23x">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="duC-bU-23x">
                             <connections>
-                                <action selector="goBack:" destination="0Ao-cg-peg" id="1RJ-0q-J8B"/>
+                                <action selector="back:" destination="0Ao-cg-peg" id="tg9-1G-6lg"/>
+                                <segue destination="KGa-0E-0E8" kind="unwind" unwindAction="unwindToPlaceListWithSender:" id="1gj-Xu-Cln"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="CIs-3n-H9i">
@@ -91,6 +92,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QhB-nH-8q1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="KGa-0E-0E8" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1548" y="662.51874062968523"/>
         </scene>
@@ -319,7 +321,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Seo-la-ypp"/>
+        <segue reference="SMg-U4-Lnv"/>
         <segue reference="LJI-In-ExV"/>
     </inferredMetricsTieBreakers>
 </document>

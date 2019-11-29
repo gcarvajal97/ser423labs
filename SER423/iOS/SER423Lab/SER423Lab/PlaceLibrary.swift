@@ -21,8 +21,9 @@ import Foundation
 
 final class PlaceLibrary {
     
+    // Singleton class template
     static let sharedLibrary = PlaceLibrary()
-    private var library = [PlaceDescription]()
+    var library = [PlaceDescription]()
     
     private init() {}
     
@@ -36,7 +37,6 @@ final class PlaceLibrary {
     
     func removePlace(placeToRemove: PlaceDescription) {
         let index = find(value: placeToRemove.name)
-        print(index)
         if index != nil {
             PlaceLibrary.sharedLibrary.library.remove(at: index!)
         }
@@ -62,5 +62,9 @@ final class PlaceLibrary {
         if index != nil {
             PlaceLibrary.sharedLibrary.library[index!] = placeToUpdate
         }
+    }
+    
+    func clearLibrary() {
+        PlaceLibrary.sharedLibrary.library.removeAll()
     }
 }

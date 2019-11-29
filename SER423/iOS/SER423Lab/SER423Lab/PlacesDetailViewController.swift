@@ -31,14 +31,15 @@ class PlacesDetailViewController: UIViewController {
         // Pass the selected object to the new view controller.
         super.prepare(for: segue, sender: sender)
         guard let placeUpdateViewController = segue.destination as? PlacesAddViewController else {
-            fatalError("Unexpected destination: \(segue.destination)")
+                return
         }
          
         placeUpdateViewController.place = self.place
     }
     
-    @IBAction func goBack(_ sender: Any) {
+    @IBAction func back(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-
+    
+    
 }

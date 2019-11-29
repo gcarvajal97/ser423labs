@@ -20,7 +20,25 @@
 import UIKit
 import os.log
 
-class PlacesAddViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate {
+let pickerData = ["Travel", "School", "Hike", "Outdoor", "Other"]
+
+class PlacesAddViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerData.count
+    }
+    
+    func pickerView( _ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+     return pickerData[row]
+    }
+
+    func pickerView( _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        categoryTextField.text = pickerData[row]
+    }
+    
     
     var place: PlaceDescription?
     
@@ -51,6 +69,9 @@ class PlacesAddViewController: UIViewController, UITextFieldDelegate, UINavigati
         }
         
         updateSaveButtonState()
+        let picker = UIPickerView()
+        categoryTextField.inputView = picker
+        picker.delegate = self
         
     }
     
@@ -132,6 +153,11 @@ class PlacesAddViewController: UIViewController, UITextFieldDelegate, UINavigati
     
     override func viewWillDisappear(_ animated: Bool) {
         NSLog("In viewWillDisappear method of add location view")
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     //MARK: UITextFieldDelegate

@@ -1,6 +1,10 @@
 package edu.asu.bsse.gcarvaj3.ser423labapp;
 
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ser423Lab.R;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -41,6 +46,7 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity {
     RecyclerViewAdapter dataAdapter;
     PlaceLibrary library;
+    SQLiteDatabase placesDb;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -156,14 +162,34 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case "add":
                     try {
-                        MethodInformation mi = new MethodInformation(this,
-                                this.getResources().getString(R.string.defaultUrl), "add",
-                                new Object[]{
-                                        new PlaceDescription(
-                                                data.getStringExtra(
-                                                        "NEW_LOCATION")
-                                        ).toJson()});
-                        AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
+                        PlaceDb places = new PlaceDb(this);
+                        this.placesDb = places.openDB();
+                        PlaceDescription place =
+                                new PlaceDescription(data.getStringExtra("NEW_LOCATION"));
+
+                        ContentValues values = new ContentValues();
+                        values.put("name", place.getName());
+                        values.put("title", place.getAddressTitle());
+                        values.put("street", place.getAddressStreet());
+                        values.put("category",place.getCategory());
+                        values.put("description", place.getDescription());
+                        values.put("elevation", place.getElevation());
+                        values.put("latitude", place.getLatitude());
+                        values.put("longitude", place.getLongitude());
+
+                        this.placesDb.insert("places", null, values);
+                        @SuppressLint("Recycle") Cursor cur =
+                                this.placesDb.rawQuery("select name from places;", new String[]{});
+                        ArrayList<String> al = new ArrayList<>();
+                        while(cur.moveToNext()){
+                            try {
+                                al.add(cur.getString(0));
+                            } catch(Exception ex){
+                                android.util.Log.w(this.getClass().getSimpleName(),
+                                        "exception stepping through cursor" + ex.getMessage());
+                            }
+                        }
+                        this.recreate();
                     } catch (Exception ex) {
                         android.util.Log.w(this.getClass().getSimpleName(),
                                 "Exception creating adapter: " + ex.getMessage());

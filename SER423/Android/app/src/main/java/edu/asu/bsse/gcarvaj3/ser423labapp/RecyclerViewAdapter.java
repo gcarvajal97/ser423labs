@@ -1,8 +1,12 @@
 package edu.asu.bsse.gcarvaj3.ser423labapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     MainActivity main;
     PlaceDescription selected;
     PlaceLibrary library = PlaceLibrary.getInstance("none");
+    SQLiteDatabase placesDb = null;
 
 
     // data is passed into the constructor
@@ -55,6 +60,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mData.add(new PlaceDescription());
         this.names.add("unknown");
         this.main = main;
+        try {
+            PlaceDb places = new PlaceDb(context);
+            this.placesDb = places.openDB();
+            Cursor cur = this.placesDb.rawQuery("select name from places;", new String[]{});
+            ArrayList<String> al = new ArrayList<>();
+            while(cur.moveToNext()){
+                try {
+                    al.add(cur.getString(0));
+                } catch(Exception ex){
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "exception stepping through cursor" + ex.getMessage());
+                }
+            }
+            setNames(al);
+        } catch (Exception ex) {
+            android.util.Log.w(this.getClass().getSimpleName(), "Exception creating adapter: " +
+                    ex.getMessage());
+        }
     }
 
     // inflates the row layout from xml when needed
@@ -62,17 +85,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.places_list_layout, parent, false);
-        if (this.names.get(0).equals("unknown")) {
-            try {
-                MethodInformation mi = new MethodInformation(this.main,
-                        view.getResources().getString(R.string.defaultUrl), "getNames",
-                        new Object[]{});
-                AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
-            } catch (Exception ex) {
-                android.util.Log.w(this.getClass().getSimpleName(), "Exception creating adapter: " +
-                        ex.getMessage());
-            }
-        }
         return new ViewHolder(view);
     }
 
@@ -155,57 +167,63 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     int foundIndex = 0;
                     PlaceDescription updatedLocation =
                             new PlaceDescription(data.getStringExtra("JSON_STR"));
-                    for (int i = 0; i < mData.size(); i++) {
-                        if (updatedLocation.compare(updatedLocation, mData.get(i), "name")) {
-                            foundIndex = i;
-                            break;
-                        }
+                    try {
+                        ContentValues values = new ContentValues();
+                        values.put("name", updatedLocation.getName());
+                        values.put("title", updatedLocation.getAddressTitle());
+                        values.put("street", updatedLocation.getAddressStreet());
+                        values.put("category", updatedLocation.getCategory());
+                        values.put("description", updatedLocation.getDescription());
+                        values.put("elevation", updatedLocation.getElevation());
+                        values.put("latitude", updatedLocation.getLatitude());
+                        values.put("longitude", updatedLocation.getLongitude());
 
-                    }
-                    try {
-                        MethodInformation mi = new MethodInformation(this.main,
-                                this.main.getResources().getString(R.string.defaultUrl), "remove",
-                                new String[]{this.mData.get(foundIndex).getName()});
-                        AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
-                    } catch (Exception ex) {
-                        android.util.Log.w(this.getClass().getSimpleName(), "Exception creating adapter: " +
-                                ex.getMessage());
-                    }
-                    try {
-                        MethodInformation mi = new MethodInformation(this.main,
-                                this.main.getResources().getString(R.string.defaultUrl),
-                                "add",
-                                new Object[]{updatedLocation.toJson()});
-                        AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
+                        String[] params = new String[]{updatedLocation.getName()};
+                        this.placesDb.update("places", values, "name=?", params);
+
                     } catch (Exception ex) {
                         android.util.Log.w(this.getClass().getSimpleName(),
-                                "Exception creating adapter: " + ex.getMessage());
+                                "Exception creating adapter: " +
+                                ex.getMessage());
                     }
-                    this.mData.set(foundIndex, updatedLocation);
+                    @SuppressLint("Recycle") Cursor cur =
+                            this.placesDb.rawQuery("select name from places;", new String[]{});
+                    ArrayList<String> al = new ArrayList<>();
+                    while(cur.moveToNext()){
+                        try {
+                            al.add(cur.getString(0));
+                        } catch(Exception ex){
+                            android.util.Log.w(this.getClass().getSimpleName(),
+                                    "exception stepping through cursor" + ex.getMessage());
+                        }
+                    }
+                    this.setNames(al);
                     this.notifyDataSetChanged();
                     android.util.Log.i(this.getClass().getSimpleName(), "Location updated");
                     break;
                 case Constants.REQUEST_FOR_DELETE:
                     android.util.Log.i(this.getClass().getSimpleName(), "Location deleted");
-                    foundIndex = 0;
                     PlaceDescription deletedLocation =
                             new PlaceDescription(data.getStringExtra("JSON_STR"));
-                    for (int i = 0; i < mData.size(); i++) {
-                        if (deletedLocation.compare(deletedLocation, mData.get(i), "name")) {
-                            foundIndex = i;
-                            break;
-                        }
-
-                    }
                     try {
-                        MethodInformation mi = new MethodInformation(this.main,
-                                this.main.getResources().getString(R.string.defaultUrl), "remove",
-                                new String[]{this.mData.get(foundIndex).getName()});
-                        AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
+                        String[] deletedName = new String[]{deletedLocation.getName()};
+                        this.placesDb.delete("places", "name=?", deletedName);
                     } catch (Exception ex) {
-                        android.util.Log.w(this.getClass().getSimpleName(), "Exception creating adapter: " +
+                        android.util.Log.w(this.getClass().getSimpleName(),
+                                "Exception creating adapter: " +
                                 ex.getMessage());
                     }
+                    cur = this.placesDb.rawQuery("select name from places;", new String[]{});
+                    al = new ArrayList<>();
+                    while(cur.moveToNext()){
+                        try {
+                            al.add(cur.getString(0));
+                        } catch(Exception ex){
+                            android.util.Log.w(this.getClass().getSimpleName(),
+                                    "exception stepping through cursor" + ex.getMessage());
+                        }
+                    }
+                    this.setNames(al);
                     this.notifyDataSetChanged();
                     break;
                 default:
@@ -218,17 +236,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
+    @SuppressLint("Recycle")
     void setNames(ArrayList<String> names) {
+        this.clearData();
         this.names = names;
-        for (int i = 0; i < names.size(); i ++)
             try {
-                MethodInformation mi = new MethodInformation(main,
-                        main.getResources().getString(R.string.defaultUrl), "get",
-                        new String[]{names.get(i)});
-                AsyncConnection ac = (AsyncConnection) new AsyncConnection().execute(mi);
+                Cursor cur = this.placesDb.rawQuery("SELECT * FROM places", null);
+                cur.moveToFirst();
+                while (!cur.isAfterLast()) {
+                    addData(new PlaceDescription(cur));
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            cur.getColumnName(1));
+                    cur.moveToNext();
+                }
+
             } catch (Exception ex) {
-                android.util.Log.w(this.getClass().getSimpleName(), "Exception creating adapter: " +
-                        ex.getMessage());
+                android.util.Log.w(this.getClass().getSimpleName(),
+                        "Exception creating adapter: " + ex.getMessage());
             }
 
     }

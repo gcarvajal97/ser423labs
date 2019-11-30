@@ -1,5 +1,7 @@
 package edu.asu.bsse.gcarvaj3.ser423labapp;
 
+import android.database.Cursor;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -111,6 +113,22 @@ public class PlaceDescription {
         } catch (JSONException e){
             android.util.Log.w(this.getClass().getSimpleName(),
                     "error converting to/from json");
+        }
+    }
+
+    public PlaceDescription(Cursor cursor) {
+        try {
+            this.name = cursor.getString(0);
+            this.addressTitle = cursor.getString(1);
+            this.addressStreet = cursor.getString(2);
+            this.category = cursor.getString(3);
+            this.description = cursor.getString(4);
+            this.elevation = cursor.getDouble(5);
+            this.latitude = cursor.getDouble(6);
+            this.longitude = cursor.getDouble(7);
+        } catch (Exception e){
+            android.util.Log.w(this.getClass().getSimpleName(),
+                    "error pulling from DB");
         }
     }
 
